@@ -55,7 +55,7 @@ void print_char(char character) {
 		return;
 	}
 
-	if (col > WIDTH) {
+	if (col >= WIDTH) {
 		print_newline();
 	}
 
