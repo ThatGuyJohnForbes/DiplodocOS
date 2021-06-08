@@ -1,80 +1,84 @@
 #include "print.h"
 
-const static u8 WIDTH = 80;
-const static u8 HEIGHT = 25;
+const static u8 VGA_WIDTH = 80;
+const static u8 VGA_HEIGHT = 25;
 
-struct Char {
+struct vga_entry {
 	u8 character;
 	u8 color;
 };
 
-struct Char* buffer = (struct Char*)0xb8000;
+struct vga_entry* terminal_buffer = (struct vga_entry*)0xb8000;
 
 u8 col = 0;
 u8 row = 0;
 
 u8 color = WHITE | BLACK << 4;
 
-void clear_row(u8 y) {
-	struct Char empty = (struct Char)
+void terminal_clearrow(u8 y) {
+	struct vga_entry empty = (struct vga_entry)
 	{
 		.character =  ' ',
 		.color = color,
 	};
 
-	for (u8 x = 0; x < WIDTH; ++x)
-		buffer[x + HEIGHT * y] = empty;
+	for (u8 x = 0; x < VGA_WIDTH; ++x)
+        terminal_buffer[x + VGA_HEIGHT * y] = empty;
 }
 
-void print_clear() {
-	for (u8 y = 0; y < HEIGHT; ++y)
-		clear_row(y);
+void terminal_putentryat(vga_entry character, u8 x, u8 y){
+    const size_t index = y * VGA_WIDTH + x;
+    terminal_buffer[index] = character;
 }
 
-void print_newline() {
+void terminal_clear() {
+	for (u8 y = 0; y < VGA_HEIGHT; ++y)
+        terminal_clearrow(y);
+}
+
+void terminal_putnewline() {
 	col = 0;
-	if (row < HEIGHT - 1) {
+	if (row < VGA_HEIGHT - 1) {
 		row++;
 		return;
 	}
 
-	for (u8 x = 1; x < HEIGHT; ++x) {
-		for (u8 y = 0; y < WIDTH; ++y) {
-			struct Char character = buffer[x+WIDTH*y];
-			buffer[x + WIDTH * (y - 1)] = character;
+	for (u8 x = 1; x < VGA_HEIGHT; ++x) {
+		for (u8 y = 0; y < VGA_WIDTH; ++y) {
+			struct vga_entry character = terminal_buffer[x+VGA_WIDTH*y];
+            terminal_putentryat(character,x,y-1);
 		}
 	}
 
-	clear_row(HEIGHT-1);
+    terminal_clearrow(VGA_HEIGHT-1);
 }
 
-void print_char(char character) {
+void terminal_putchar(char character) {
 	if (character == '\n') {
-		print_newline();
+        terminal_putnewline();
 		return;
 	}
 
-	if (col >= WIDTH) {
-		print_newline();
+	if (col >= VGA_WIDTH) {
+        terminal_putnewline();
 	}
 
-	buffer[col + WIDTH * row] = (struct Char){
+    terminal_buffer[col + VGA_WIDTH * row] = (struct vga_entry){
 		.character = (u8)character,
 		.color = color,
 	};
 	col++;
 }
 
-void print_str(char* str) {
+void terminal_writestring(char* str) {
 	for (u16 i = 0; true; ++i) {
 		char character = (u8)str[i];
 		if (character == '\0')
 			return;
-
-		print_char(character);
+        terminal_putchar(character);
 	}
 }
 
-void print_set_color(u8 foreground, u8 background) {
+void terminal_setcolor(u8 foreground, u8 background) {
 	color = foreground | (background << 4);
 }

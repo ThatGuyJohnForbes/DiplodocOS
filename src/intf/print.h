@@ -1,5 +1,4 @@
 #include "types.h"
-#include "string.h"
 #pragma once
 
 enum {
@@ -21,7 +20,7 @@ enum {
 	WHITE,
 };
 
-void print_clear();
-void print_char(char);
-void print_str(char*);
-void print_set_color(u8, u8);
+void terminal_clear();
+void terminal_putchar(char);
+void terminal_writestring(char*);
+void terminal_setcolor(u8, u8);
