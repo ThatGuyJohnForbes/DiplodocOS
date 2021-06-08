@@ -3,7 +3,8 @@ Learning the intricacies of the GNU/Linux kernel by attempting to make a deliber
 
 Commands for building on windows
 >docker run --rm -it -v "%cd%":/root/env diplodocos_buildenv
-	\##make build-x86_64
+>
+>make build-x86_64
 
 Command for running on windows
 >qemu-system-x86_64 dist/x86_64/kernel.iso
