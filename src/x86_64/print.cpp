@@ -1,4 +1,3 @@
-#include "typedef.h"
 #include "print.h"
 
 const static u8 WIDTH = 80;
@@ -19,8 +18,8 @@ u8 color = WHITE | BLACK << 4;
 void clear_row(u8 y) {
 	struct Char empty = (struct Char)
 	{
-		character : ' ',
-		color : color,
+		.character =  ' ',
+		.color = color,
 	};
 
 	for (u8 x = 0; x < WIDTH; ++x)
@@ -60,8 +59,8 @@ void print_char(char character) {
 	}
 
 	buffer[col + WIDTH * row] = (struct Char){
-		character: (u8)character,
-		color : color,
+		.character = (u8)character,
+		.color = color,
 	};
 	col++;
 }
