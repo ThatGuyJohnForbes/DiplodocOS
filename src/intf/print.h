@@ -1,8 +1,6 @@
 #include "typedef.h"
 #pragma once
 
-//FIXME: implement a nicer types header
-
 enum {
 	BLACK,
 	BLUE,
