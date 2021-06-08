@@ -7,4 +7,4 @@ Commands for building on windows
 >make build-x86_64
 
 Command for running on windows
->qemu-system-x86_64 dist/x86_64/kernel.iso
+>qemu-system-x86_64 -drive format=raw,file=dist/x86_64/kernel.iso
