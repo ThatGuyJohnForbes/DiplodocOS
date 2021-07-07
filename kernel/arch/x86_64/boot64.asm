@@ -14,4 +14,5 @@ long_mode_start:
 	
 	; call external cpp kernel
 	call kernel_main
+	cli
 	hlt

@@ -1,4 +1,6 @@
-#include "print.h"
-extern "C" void kernel_main() {
-    __asm("hlt");
+#include <kernel/tty.h>
+
+extern "C" void kernel_main(void) {
+    terminal_initialize();
+    //printf("Hello, Kernel has successfully been built and ran!");
 }
