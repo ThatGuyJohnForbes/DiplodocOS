@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-echo x86_64-elf
+echo i686-elf

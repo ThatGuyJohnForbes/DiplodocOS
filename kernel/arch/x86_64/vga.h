@@ -1,5 +1,7 @@
-#pragma once
-#include "types.h"
+#ifndef ARCH_X86_64_VGA_H
+#define ARCH_X86_64_VGA_H
+
+#include <stdint.h>
 
 enum vga_color {
     VGA_COLOR_BLACK = 0,
@@ -20,10 +22,12 @@ enum vga_color {
     VGA_COLOR_WHITE = 15,
 };
 
-static inline u8 vga_entry_color(enum vga_color fg, enum vga_color bg) {
+static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg) {
     return fg | bg << 4;
 }
 
-static inline u8 vga_entry(u8 uc, u8 color) {
-    return (u16) uc | (u16) color << 8;
+static inline uint16_t vga_entry(unsigned char uc, uint8_t color) {
+    return (uint16_t) uc | (uint16_t) color << 8;
 }
+
+#endif
